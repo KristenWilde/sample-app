@@ -1,10 +1,8 @@
 class UsersController < ApplicationController
   def new
     @user = User.new
-  end
-
-  def show
-    @user = User.find(params[:id])
+    @path = signup_path
+    @button_text = "Create my account"
   end
 
   def create
@@ -15,6 +13,25 @@ class UsersController < ApplicationController
       redirect_to @user # Rails infers that we want to redirect to user_url(@user).
     else
       render 'new'
+    end
+  end
+
+  def show
+    @user = User.find(params[:id])
+  end
+
+  def edit
+    @user = User.find(params[:id])
+    @button_text = "Save changes"
+  end
+
+  def update
+    @user = User.find(params[:id])
+    if @user.update_attributes(user_params)
+      flash[:success] = "Information updated."
+      redirect_to @user
+    else
+      render 'edit'
     end
   end
 
